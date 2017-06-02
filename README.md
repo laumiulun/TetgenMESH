@@ -48,11 +48,11 @@ All the switches for tetgen is below:
 |      |   |   |   |   |
 |      |   |   |   |   |
 
-
-    |---|---|
-    |-p |Tetrahedralizes a piecewise linear complex (PLC).|
+    |Switch|Description|
+    |---|-------------------------------------------------------|
+    |-p |Tetrahedralizes a piecewise linear complex (PLC).      |
     |-Y |Preserves the input surface mesh (does not modify it). |
-    |-r |Reconstructs a previously generated mesh.|
+    |-r |Reconstructs a previously generated mesh.              |
     |-q |Refines mesh (to improve mesh quality).|
     |-R |Mesh coarsening (to reduce the mesh elements).|
     |-A |Assigns attributes to tetrahedra in different regions. |
