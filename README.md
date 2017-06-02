@@ -42,15 +42,16 @@ TetGen has many synatax that governs its outputs, and the basic commands is:
 All the switches for tetgen is below:
 
 
-|dfds |   |   |   |   |
+|dfdsd|   |   |   |   |
 |------|---|---|---|---|
+|  dfds    |   |   |   |   |
 |      |   |   |   |   |
 |      |   |   |   |   |
-|      |   |   |   |   |
+
 
 
 |Switch|Description|
-|------|---|---|---|---|
+
 |-p |Tetrahedralizes a piecewise linear complex (PLC).      |
 |-Y |Preserves the input surface mesh (does not modify it). |
 |-r |Reconstructs a previously generated mesh.              |
