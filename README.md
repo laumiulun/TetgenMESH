@@ -41,15 +41,7 @@ TetGen has many synatax that governs its outputs, and the basic commands is:
 
 All the switches for tetgen is below:
 
-
-|Switch|Description   |   
-|------|---|---|---|---|
-|  dfds    |   |   |   |   |
-|      |   |   |   |   |
-|      |   |   |   |   |
-|
-
-
+```
 |Switch|Description|
 
 |-p |Tetrahedralizes a piecewise linear complex (PLC).      |
@@ -86,6 +78,7 @@ All the switches for tetgen is below:
 |-Q |Quiet: No terminal output except errors.|
 |-V |Verbose: Detailed information, more terminal output. |
 |-h |Help: A brief instruction for using TetGen|
+```
 
 ### Using Tetgen commit
 ### Contact ###
