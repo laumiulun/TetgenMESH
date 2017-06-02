@@ -42,7 +42,9 @@ TetGen has many synatax that governs its outputs, and the basic commands is:
 All the switches for tetgen is below:
 
 
-|Switches|Description|
+| Switches | Description |
+
+
     |---|---|
     |-p |Tetrahedralizes a piecewise linear complex (PLC).|
     |-Y |Preserves the input surface mesh (does not modify it). |
