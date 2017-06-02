@@ -42,7 +42,7 @@ TetGen has many synatax that governs its outputs, and the basic commands is:
 All the switches for tetgen is below:
 
 
-|Switch|Description   |   |   |   |
+|Switch|Description   |   
 |------|---|---|---|---|
 |  dfds    |   |   |   |   |
 |      |   |   |   |   |
