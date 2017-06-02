@@ -49,7 +49,7 @@ All the switches for tetgen is below:
 |      |   |   |   |   |
 
     |Switch|Description|
-    |---|-------------------------------------------------------|
+    |------|---|---|---|---|
     |-p |Tetrahedralizes a piecewise linear complex (PLC).      |
     |-Y |Preserves the input surface mesh (does not modify it). |
     |-r |Reconstructs a previously generated mesh.              |
