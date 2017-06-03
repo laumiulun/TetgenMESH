@@ -37,7 +37,7 @@ Add the following line to the bottom as a path:
 ### Using TetGen Switch ###
 TetGen has many synatax that governs its outputs, and the basic commands is:
 
-    tetgen [SWITCH] input_file
+    tetgen [SWITCH] [input_file]
 
 All the switches for tetgen is below:
 
@@ -80,7 +80,8 @@ All the switches for tetgen is below:
 |-h |Help: A brief instruction for using TetGen.            |
 
 ```
-### Using Tetgen commit
+### Using TetgenMESH
+
 
 
 
