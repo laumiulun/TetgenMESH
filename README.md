@@ -2,11 +2,14 @@
 
 ### Overview ###
 
+The purpose of this simple python scripts is to save time for user by changing raw XYZ(and attributes) into tetgen input format and run the program.
+
 ### Requirement ###
 * Python 3.6.1 
 * C++ compiler 
+* Tetgen 1.5
 
-### Compile TetGen ###
+### Compile and Install Tetgen ###
 In-order to use TetGen, first download TetGen v1.5 from 
 
 [Tetgen1.5](http://wias-berlin.de/software/tetgen/)
@@ -82,7 +85,9 @@ All the switches for tetgen is below:
 ```
 ### Using TetgenMESH
 
+To run the scripts, simply moved **run_test** and **python_scripts** folder into directory the data is located in terminal and type the following command :
 
+    ./run_test
 
 
 ### Contact ###
