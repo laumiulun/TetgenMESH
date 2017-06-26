@@ -2,14 +2,12 @@ import os
 import sys
 import subprocess
 
-
-class bcolors:
-    N='\033[0m'             #Normal
-    BOLD = '\033[1m'        #Bold
-    UNDERL = '\033[4m'      #Underline
-    RED = '\033[91m'        #RED
-    GREEN = '\033[42m'      #GREEN
-
+def findlocation(keyword):
+    string = str(keyword)
+    for s in list:
+        if string in str(s):
+            out=list.index(s)
+    return out
 
 inname=input('Enter Input File Name: ')
 outname=inname[:-3]+'node'
@@ -22,11 +20,16 @@ with open(inname) as f:
         if line:
             line=[str(i) for i in line]  # convert to str
             out.append(line)
-            
+list = out
+
+locat=int(findlocation('END'))
+
+del out[0:locat+1]           
 # NUMBER OF ROWS AND COLUMNS
 NumsRows=len(out)
 NumsColu=(len(out[0]))
 
+NullV=int(-10000)
 
 # ORGANIZE DATA
 x=[]
@@ -34,7 +37,10 @@ for j in range(NumsRows):
     x.append([])
     for i in range(NumsColu):
         x[j].append(0)
-        x[j][i]=out[j][i]
+        if float(out[j][i])<NullV:
+            x[j][i]=0
+        else:
+            x[j][i]=out[j][i]
         
 # ADD NUMBERING TO THE FRONT OF EACH NODES
 for i in range(NumsRows):
@@ -43,7 +49,7 @@ for i in range(NumsRows):
     
 # OUTPUT FILES WITH ADDED HEADER FOR INPUT TO TETGEN
 with open(outname, "w+") as f:
-    M=(str(NumsRows)+' 3 1 1''\n')
+    M=(str(NumsRows)+' 3 1 0''\n')
     f.write(M)
     for j in range(len(x)):
         for i in range(len(x[0])):
