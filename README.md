@@ -85,9 +85,11 @@ All the switches for tetgen is below:
 ```
 ### Using TetgenMESH
 
-To run the scripts, simply moved **run_test** and **python_scripts** folder into directory the data is located in terminal and type the following command :
+To run the scripts, simply navigate to the test folder and enter the following command:
 
-    ./run_test
+    $/scripts/tetgenMESH.sh
+
+The program will ask you to enter the name of the input file(txt)
 
 
 ### Contact ###
