@@ -85,13 +85,20 @@ All the switches for tetgen is below:
 |-h |Help: A brief instruction for using TetGen.            |
 
 ```
+### Input File
+
+The input file is will be consist of XYZ and any number of attributes. The format of the input file is as follow:
+
+X|Y|Z| Attributes 1 | Attributes 2 | Attributes n |
+
 ### Using TetgenMESH
 
 To run the scripts, simply navigate to the test folder and enter the following command:
 
     $../scripts/tetgenMESH.sh
 
-The program will ask you to enter the name of the input file(txt)
+The program will ask you to enter the name of the input file(txt).
+
 
 
 ### Contact ###
