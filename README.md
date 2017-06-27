@@ -89,7 +89,7 @@ All the switches for tetgen is below:
 
 The input file is will be consist of XYZ and any number of attributes. The format of the input file is as follow:
 
-X|Y|Z| Attributes 1 | Attributes 2 | Attributes n |
+| X | Y | Z | Attributes 1 | Attributes 2 | Attributes n |
 
 ### Using TetgenMESH
 
