@@ -1,8 +1,8 @@
-# TETGEN MESH #
+# TetgenMESH #
 
 ### Overview ###
 
-The purpose of this simple python scripts is to save time for user by changing raw XYZ(and attributes) into tetgen input format and run the program.
+Tetgen is a program developed by Weierstrass Institute of Applied Analysis and Stochastics (WISA) to generate tetrahedral meshes of any 3D polyhedral domains. TetgenMESH is developed as a submodule to provide FALCON(SubPackage of MOOSEFRAMEWORK) with the necessary input mesh data.
 
 ### Requirement ###
 * Python 3.6.1 
@@ -14,7 +14,7 @@ In-order to use TetGen, first download TetGen v1.5 from
 
 [Tetgen1.5](http://wias-berlin.de/software/tetgen/)
 
-Before compiling tether, first put all sources files, **tetgen.h**, **tetgen.cxx**, and **predicates.cxx** and **makefile** into one directory. 
+Before compiling tetgen, first put all sources files, **tetgen.h**, **tetgen.cxx**, and **predicates.cxx** and **makefile** into one directory. 
 
 You also need to specify the C++ compiler to be used( Default is GNU C++ compiler)
 
@@ -28,6 +28,8 @@ To compile TetGen into a executable file, use the following command:
 	
 	g++ -o tether tetgen.cxx predicates.o -lm
 
+Tetgen is provided if you clone falcon directly from github, but requires indivduial user to compile it. Tetgen is located in **falcon/tpl/tetgen**. To compile tetgen, simply navigate to the folder and follow the instruction above. 
+ 
 ### Environmental Variable ###
 To use Tetgen executable outside of the file, navigate to the file using this command:
 
@@ -87,7 +89,7 @@ All the switches for tetgen is below:
 
 To run the scripts, simply navigate to the test folder and enter the following command:
 
-    $/scripts/tetgenMESH.sh
+    $../scripts/tetgenMESH.sh
 
 The program will ask you to enter the name of the input file(txt)
 
