@@ -91,6 +91,10 @@ The input file is will be consist of XYZ and any number of attributes. The forma
 
 | X | Y | Z | Attributes 1 | Attributes 2 | Attributes n |
 
+An example input file has been provided:
+[Example Input File](https://raw.githubusercontent.com/laumiulun/TetgenMESH/master/Gamma.txt)
+
+
 ### Using TetgenMESH
 
 To run the scripts, simply navigate to the test folder and enter the following command:
