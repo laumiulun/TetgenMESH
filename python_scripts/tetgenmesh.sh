@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 import sys, os 
 
-# Set the current working directory to the directory where this script is located
+
 x=os.getcwd()
 y=os.path.join(x,'python_scripts')
 
 sys.path.append(y)
-
-import add
+import runtest

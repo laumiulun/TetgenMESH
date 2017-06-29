@@ -26,7 +26,7 @@ To compile Tetgen, first navigate to the directory TetGen is located, which we w
 
 To compile TetGen into a executable file, use the following command:
 	
-	g++ -o tether tetgen.cxx predicates.o -lm
+	g++ -o tetgen tetgen.cxx predicates.o -lm
 
 Tetgen is provided if you clone falcon directly from github, but requires indivduial user to compile it. Tetgen is located in **falcon/tpl/tetgen**. To compile tetgen, simply navigate to the folder and follow the instruction above. 
  
@@ -94,7 +94,7 @@ The input file is will be consist of XYZ and any number of attributes. The forma
 An example input file has been provided:
 [Example Input File](https://raw.githubusercontent.com/laumiulun/TetgenMESH/master/Gamma.txt)
 
-
+In the inputfile, the 
 ### Using TetgenMESH
 
 To run the scripts, simply navigate to the test folder and enter the following command:
