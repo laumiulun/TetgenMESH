@@ -75,6 +75,11 @@ def readfile(filenameinput):
                 out.append(line)
     return out
 
+def find(name, path):
+    for root, dirs, files in os.walk(path):
+        if name in files:
+            return os.path.join(root, name)
+        
 # START OF THE SCRIPTS
 #############################################################################
 
@@ -82,13 +87,27 @@ print("-"*70)
 # GET CURRENT WORKING DIRECTORY AND MOVE INTO TEST DIRECTORY
 os2=os.getcwd()   # OS2: Current working directory
 
+# ASK FOR USER INPUT TO FILEFORMAT
+
+while True:
+    formatname=raw_input(bcolors.BOLD+"ENTER FORMATS(ROCKWORKS OR PETREL): " + bcolors.N)
+    if formatname == 'ROCKWORKS':
+        break
+    elif formatname == 'PETREL':
+        break
+    else:
+        print(bcolors.RED +"ERROR: FILE FORMAT NOT FOUND" + bcolors.N)
+        
 # ASK FOR USER INPUT TO THE FILE
-usrname=raw_input(bcolors.BOLD+'Enter Input File Name: '+bcolors.N)
-inname=os.path.join(os2,usrname)
+while True:    
+    usrname=raw_input(bcolors.BOLD+'Enter Input File Name: '+bcolors.N)
+    inname=os.path.join(os2,usrname)
 
-#print 'usrname:',usrname
-#print'inname:',inname
-
+    try:
+        f= open(inname)
+        break
+    except BaseException:
+        print bcolors.RED+'ERROR: INPUT FILE NOT FOUND'+bcolors.N
 
 # Find files
 i=0
@@ -101,31 +120,15 @@ for root, dirs, files in os.walk(os2, topdown=True):    # Find all files in the 
             x.append([])
             x[i-1]=(os.path.join(root, name))
 
-#print(bcolors.BOLD+'Input WD:'+ bcolors.N + inname)
-
 f=inname.find(".")
 outname=inname[0:f]+'.node'  # print .node absolute filepath
-
-#print(bcolors.BOLD+'Output WD:'+bcolors.N + outname)
-
-#FILE NOT FIND ERROR
-fileERROR(inname,"INPUT FILE")
-
-# OPEN INPUT FILE(TXT)
-##with open(inname) as f:
-##    out=[]
-##    for line in f:
-##        line = line.split()
-##        if line:
-##            line=[str(i) for i in line]  # convert to str
-##            out.append(line)
 
 out=readfile(inname)
 
 """-------------------------------------------------------------------------------------------------------------"""
 # FILE FORMAT CHECK
 # ASK FOR USER INPUT FORMAT
-formatname=raw_input(bcolors.BOLD+"ENTER FORMATS(ROCKWORKS OR PETREL): " + bcolors.N)
+
 
 if formatname == "ROCKWORKS":
     del out[0]
@@ -209,10 +212,7 @@ elif formatname == "PETREL":
     list = out
     locat=int(findlocation('END'))
     del out[0:locat+1]
-    
-else:
-    print(bcolors.RED +"ERROR: FILE FORMAT NOT FOUND" + bcolors.N)
-    exit()
+
 
 """-------------------------------------------------------------------------------------------------------------"""
 
@@ -261,14 +261,10 @@ print("-"*70)
 #FIND TETGEN DIR
 os5=os.path.dirname(os.path.dirname(os2))
 tetgen='tetgen'
-for root, dirs, files in os.walk(os5, topdown=True):    # Find all files in the the dir
-    for name in files:
-        if tetgen in name:
-            pathtotetgen=(os.path.join(root, name))
 
-# 
+pathtotetgen=find(tetgen,os5)
+
 output=(pathtotetgen + " -kNEF " + outname)
-
 
 subprocess.call(output,shell=True)
 print(bcolors.GREEN+'Tetgen OK'+bcolors.N)
