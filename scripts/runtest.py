@@ -75,7 +75,6 @@ def readfile(filenameinput):
 # START OF THE SCRIPTS
 #############################################################################
 
-print("-"*50)
 # GET CURRENT WORKING DIRECTORY AND MOVE INTO TEST DIRECTORY
 os2=os.getcwd()   # OS2: Current working directory
 
@@ -140,7 +139,7 @@ if formatname == "ROCKWORKS":
             if string in name and fileformat in name:
                 j+=1
                 x.append([])
-                x[i-1]=(os.path.join(root,name))
+                x[i-1]=(os.path.join(root, name))
             
     # Call redundancy FUNCTION
     redundancy(x)
@@ -254,7 +253,7 @@ print("-"*50)
 
 #FIND TETGEN DIR
 os5=os.path.dirname(os.path.dirname(os2))
-tetgen='tetgen.exe'
+tetgen='tetgen'
 for root, dirs, files in os.walk(os5, topdown=True):    # Find all files in the the dir
     for name in files:
         if tetgen in name:

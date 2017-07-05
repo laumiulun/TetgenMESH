@@ -63,7 +63,7 @@ def redundancy(filetocheck):
                     print(os.path.basename(filetocheck[i+1]),' COORDINATES DOES NOT MATCH')
                     sys.exit()
 
-    print('REDUNDANCY CHECK OK')
+    print(bcolors.GREEN+'REDUNDANCY CHECK OK'+bcolors.N)
 
 def readfile(filenameinput):
     with open(filenameinput) as f:
@@ -78,6 +78,7 @@ def readfile(filenameinput):
 # START OF THE SCRIPTS
 #############################################################################
 
+print("-"*70)
 # GET CURRENT WORKING DIRECTORY AND MOVE INTO TEST DIRECTORY
 os2=os.getcwd()   # OS2: Current working directory
 
@@ -120,8 +121,6 @@ fileERROR(inname,"INPUT FILE")
 ##            out.append(line)
 
 out=readfile(inname)
-
-
 
 """-------------------------------------------------------------------------------------------------------------"""
 # FILE FORMAT CHECK
@@ -195,8 +194,6 @@ if formatname == "ROCKWORKS":
     for i in range(len(xyz)):
         sourceout.append([])
         sourceout[i]=xyz[i]+tatt[i]
-
-    print(outname)
     
     with open (outname,"w") as f:
         for i in range(len(sourceout)):
@@ -204,8 +201,10 @@ if formatname == "ROCKWORKS":
                 f.write(str(sourceout[i][j]))
                 f.write(' ')
             f.write('\n')
+            
     inname=outname
     out=readfile(inname)
+    
 elif formatname == "PETREL":
     list = out
     locat=int(findlocation('END'))
@@ -251,13 +250,13 @@ with open(outname, "w") as f:
 
 # STATE OUTPUT
 print(bcolors.BOLD+"[DONE]"+bcolors.N) 
-print('Number of Nodes:',NumsRows)
+print 'Number of Nodes:',NumsRows
 
 """-------------------------------------------------------------------------------------------------------------"""
 
 ### CALL PROCESS TO RUN TETGEN
 print(bcolors.BOLD+"CALLING TETGEN..."+bcolors.N)
-print("-"*50)
+print("-"*70)
 
 #FIND TETGEN DIR
 os5=os.path.dirname(os.path.dirname(os2))
@@ -297,7 +296,7 @@ for i in range(NumsRows):
         else:
             x[i][j]=out[i][j+3]
 
-print("-"*50)
+print("-"*70)
 print("Writing Attributes...")
 
 # OUTPUT INTO VTK
@@ -318,5 +317,5 @@ with open (outname2, "a+") as f:
         print("Writing Attributes ["+str(j+1)+']')
     print(bcolors.BOLD+"[DONE]"+bcolors.N)
 
-print("-"*50)
+print("-"*70)
 print(bcolors.GREEN+bcolors.BOLD+"Finish"+bcolors.N)
