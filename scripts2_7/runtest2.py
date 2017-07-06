@@ -79,7 +79,11 @@ def find(name, path):
     for root, dirs, files in os.walk(path):
         if name in files:
             return os.path.join(root, name)
-        
+
+def readatt(filepath):
+    with open(filepath) as f:
+        return f.readline()
+    f.close()
 # START OF THE SCRIPTS
 #############################################################################
 
@@ -151,6 +155,28 @@ if formatname == "ROCKWORKS":
                 
     # Call redundancy FUNCTION
     redundancy(x)
+    
+    # Extract Header Data
+    i=0
+    rheader=[]
+    for i in range(len(x)):
+        rheader.append([])
+        rheader[i]=readatt(x[i])
+
+    i=0
+    kheader=[]
+    for i in range(len(rheader)):
+        string=rheader[i]
+        kheader.append([])
+        kheader[i]=string.replace('\r\n','')
+    del rheader
+    
+    i=0
+    header=[]
+    for i in range(len(kheader)):
+        string=kheader[i]
+        header.append([])
+        header[i]=string.replace('X Y Z ','')
 
     # Extract XYZ data
     with open(x[0]) as f:
@@ -161,6 +187,8 @@ if formatname == "ROCKWORKS":
                     line=[str(i) for i in line]  # convert to str
                     out.append(line)
             del out[0]
+
+    
     xyz=[]
     for i in range(len(out)):
         xyz.append([])
@@ -207,10 +235,32 @@ if formatname == "ROCKWORKS":
             
     inname=outname
     out=readfile(inname)
-    
+
 elif formatname == "PETREL":
     list = out
+    
     locat=int(findlocation('END'))
+    print(locat)
+    headlocat=[]
+    i=0
+    string = 'FLOAT'
+    for s in list:
+        if string in str(s):
+            headlocat.append(0)
+            headlocat[i]=list.index(s)
+            i+=1
+
+    pheader=[]
+    for i in range(len(headlocat)):
+        pheader.append(0)
+        pheader[i]=out[headlocat[i]]
+        
+    header=[]
+    for i in range(len(pheader)):
+        string=pheader[i][0]
+        header.append([])
+        header[i]=string.replace('FLOAT,','')
+
     del out[0:locat+1]
 
 
@@ -302,14 +352,14 @@ with open (outname2, "a+") as f:
     M= 'POINT_DATA ' + str(NumsRows)+ '\n'
     f.write(M)
     for j in range(NumsA):
-        M='SCALARS Scalars_'+str(j+1)+' float \nLOOKUP_TABLE default \n'
+        M='SCALARS '+header[j]+' float \nLOOKUP_TABLE default \n'
         f.write(M)
         for i in range(NumsRows):
             if float(x[i][j])<NullV:
                 f.write('-1.0');
                 f.write('\n')
             else:
-                f.write(x[i][j])
+                f.write(str(x[i][j]))
                 f.write('\n')
         print("Writing Attributes ["+str(j+1)+']')
     print(bcolors.BOLD+"[DONE]"+bcolors.N)
