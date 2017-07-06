@@ -262,6 +262,7 @@ print("-"*70)
 os5=os.path.dirname(os.path.dirname(os2))
 tetgen='tetgen'
 
+# Find the path of tetgen
 pathtotetgen=find(tetgen,os5)
 
 output=(pathtotetgen + " -kNEF " + outname)
