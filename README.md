@@ -1,15 +1,24 @@
-# TetgenMESH #
+#TetgenMESH
 
-### Overview ###
+## Overview ##
 
-Tetgen is a program developed by Weierstrass Institute of Applied Analysis and Stochastics (WISA) to generate tetrahedral meshes of any 3D polyhedral domains. TetgenMESH is developed as a submodule to provide FALCON(SubPackage of MOOSEFRAMEWORK) with the necessary input mesh data.
+Tetgen is a program developed by Weierstrass Institute of Applied Analysis and Stochastics (WISA) to generate tetrahedral meshes of any 3D polyhedral domains. 
 
-### Requirement ###
-* Python 3.6.1 
+TetgenMESH is developed as a script to provide FALCON(SubPackage of MOOSEFrameWork) with the necessary input mesh data.
+
+This tutorial will be separate into two parts.
+
+**Part 1** will be covering the running of Tetgen Meshing scripts
+
+**Part 2** will be covering the conversion from VTK Mesh to Exodus Mesh
+
+## Requirements ##
+* Python 2.7 or 3.6.1 
 * C++ compiler 
 * Tetgen 1.5
+* Cubit
 
-### Compile and Install Tetgen ###
+## Compile and Install Tetgen ##
 In-order to use TetGen, first download TetGen v1.5 from 
 
 [Tetgen1.5](http://wias-berlin.de/software/tetgen/)
@@ -19,91 +28,73 @@ Before compiling tetgen, first put all sources files, **tetgen.h**, **tetgen.cxx
 You also need to specify the C++ compiler to be used( Default is GNU C++ compiler)
 
 To compile Tetgen, first navigate to the directory TetGen is located, which we will compile predicates.cxx first to get an object file:
-
 	
 	g++ -c predicates.cxx
-	
 
 To compile TetGen into a executable file, use the following command:
 	
 	g++ -o tetgen tetgen.cxx predicates.o -lm
 
 Tetgen is provided if you clone falcon directly from github, but requires indivduial user to compile it. Tetgen is located in **falcon/tpl/tetgen**. To compile tetgen, simply navigate to the folder and follow the instruction above. 
+
+## Input File ##
+TetgenMESH is design to accept two different formats: **ROCKWORKS** and **PETREL**
+
+### ROCKWORKS ###
+The input file will consist of XYZ and one set of attribute(if any). The number of attributes will be the number of files inside the test folder. 
+
+A two files attribute example will be:
+
+`example.<attribute1>.txt`
+
+`example.<attribute2>.txt`
  
-### Environmental Variable ###
-To use Tetgen executable outside of the file, navigate to the file using this command:
+And each file will have the format of with space delimited 
 
-	vi ~/.bash_profile
+> 	X  Y  Z Attributes 1 
 
-Add the following line to the bottom as a path:
-	
-	export PATH="**ENTER YOUR OWN FILE PATH TO TETGEN EXE**:$PATH"
 
-### Using TetGen Switch ###
-TetGen has many synatax that governs its outputs, and the basic commands is:
 
-    tetgen [SWITCH] [input_file]
+TetgenMESH will compare the XYZ coordinates of each files
 
-All the switches for tetgen is below:
+### PETREL ###
+The input file is will be consist of XYZ and any numbers of attributes. The format of the input file is as follow:
 
-```
-|Switch|Description|
+The end of the header must include `END` to signify the scripts as the end of the header
 
-|-p |Tetrahedralizes a piecewise linear complex (PLC).      |
-|-Y |Preserves the input surface mesh (does not modify it). |
-|-r |Reconstructs a previously generated mesh.              |
-|-q |Refines mesh (to improve mesh quality).                |
-|-R |Mesh coarsening (to reduce the mesh elements).         |
-|-A |Assigns attributes to tetrahedra in different regions. |
-|-a |Applies a maximum tetrahedron volume constraint.       |
-|-m |Applies a mesh sizing function.                        |
-|-i |Inserts a list of additional points.                   |
-|-O |Specifies the level of mesh optimization.              |
-|-S |Specifies maximum number of added points.              |
-|-T |Sets a tolerance for coplanar test (default 10−8).     |
-|-X |Suppresses use of exact arithmetic.                    |
-|-M |No merge of coplanar facets or very close vertices.    |
-|-w |Generates weighted Delaunay (regular) triangulation.   |
-|-c |Retains the convex hull of the PLC.                    |
-|-d |Detects self|-intersections of facets of the PLC.      |
-|-z |Numbers all output items starting from zero.           |
-|-f |Outputs all faces to .face file.                       |
-|-e |Outputs all edges to .edge file.                       |
-|-n |Outputs tetrahedra neighbors to .neigh file.           |
-|-v |Outputs Voronoi diagram to files.                      |
-|-g |Outputs mesh to .mesh file for viewing by Medit.       |
-|-k |Outputs mesh to .vtk file for viewing by Paraview.     |
-|-J |No jettison of unused vertices from output .node file. |
-|-B |Suppresses output of boundary information.             |
-|-N |Suppresses output of .node file.                       |
-|-E |Suppresses output of .ele file.                        |
-|-F |Suppresses output of .face and .edge file.             |
-|-I |Suppresses mesh iteration numbers.                     |
-|-C |Checks the consistency of the final mesh.              |
-|-Q |Quiet: No terminal output except errors.               |
-|-V |Verbose: Detailed information, more terminal output.   |
-|-h |Help: A brief instruction for using TetGen.            |
-
-```
-### Input File
-
-The input file is will be consist of XYZ and any number of attributes. The format of the input file is as follow:
-
-| X | Y | Z | Attributes 1 | Attributes 2 | Attributes n |
+>| X | Y | Z | Attributes 1 | Attributes 2 | Attributes n |
 
 An example input file has been provided:
 [Example Input File](https://raw.githubusercontent.com/laumiulun/TetgenMESH/master/Gamma.txt)
 
-In the inputfile, the 
-### Using TetgenMESH
+## Using TetgenMESH ##
 
-To run the scripts, simply navigate to the test folder and enter the following command:
+To run the scripts, simply navigate to the folder your test is located and enter the following command:
 
     $../scripts/tetgenMESH.sh
 
-The program will ask you to enter the name of the input file(txt).
+The scripts will then ask for input format and input name
+
+The output file will be a in an .VTK format which can be open with many open source applications(PARAVIEW)
+
+## VTK Mesh to Exodous Mesh Conversion ##
+
+To convert VTK Mesh into Exodous:
+
+1. Load the VTK mesh **example.vtk** into ParaView, and "save data" in  Exodus format as **example.e**.
+2. Load the **example.e** back into ParaView and "save data" in **example.csv** as CSV format with the reordered nodal attributes
+3. Remove all the double commas on the first line in "example.csv"
+
+	If you are using vi as the editor, type the follow to remove the commas:
+	
+		1%s/,/ /g
+	This replaces all commas from the 1st line and replace it with space. 
+
+4. 
+5. 
 
 
+## Contact ##
+This 
 
-### Contact ###
-* Developer: Miu Lun Lau
+ Developer: Miu Lun Lau
