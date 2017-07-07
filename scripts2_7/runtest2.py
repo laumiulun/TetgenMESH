@@ -84,6 +84,7 @@ def readatt(filepath):
     with open(filepath) as f:
         return f.readline()
     f.close()
+    
 # START OF THE SCRIPTS
 #############################################################################
 
@@ -94,10 +95,10 @@ os2=os.getcwd()   # OS2: Current working directory
 # ASK FOR USER INPUT TO FILEFORMAT
 
 while True:
-    formatname=raw_input(bcolors.BOLD+"ENTER FORMATS(ROCKWORKS OR PETREL): " + bcolors.N)
-    if formatname == 'ROCKWORKS':
+    formatname=raw_input(bcolors.BOLD+"[1] ROCKWORKS OR [2] PETREL \nENTER FORMAT:" + bcolors.N)
+    if formatname == '1':  # ROCKWORKS
         break
-    elif formatname == 'PETREL':
+    elif formatname == '2':  # PETREL
         break
     else:
         print(bcolors.RED +"ERROR: FILE FORMAT NOT FOUND" + bcolors.N)
@@ -134,7 +135,7 @@ out=readfile(inname)
 # ASK FOR USER INPUT FORMAT
 
 
-if formatname == "ROCKWORKS":
+if formatname == "1" :  # ROCKWORKS
     del out[0]
 
     n=usrname.find('.')
@@ -236,7 +237,7 @@ if formatname == "ROCKWORKS":
     inname=outname
     out=readfile(inname)
 
-elif formatname == "PETREL":
+elif formatname == "2":  # PETREL
     list = out
     
     locat=int(findlocation('END'))
@@ -324,9 +325,9 @@ print(bcolors.GREEN+'Tetgen OK'+bcolors.N)
 
 outname2=outname[:-4]+'1.vtk'
 
-if formatname == 'PETREL':
+if formatname == '2':
     NullV=int(-998)
-elif formatname == 'ROCKWORKS':
+elif formatname == '1':
     NullV=int(-10000)
 
 # NUMBER OF ATTRIBUTES (subtracting XYZ)
@@ -364,5 +365,8 @@ with open (outname2, "a+") as f:
         print("Writing Attributes ["+str(j+1)+']')
     print(bcolors.BOLD+"[DONE]"+bcolors.N)
 
+
+os.rename(outname2, outname2.replace(".1",""))
 print("-"*70)
 print(bcolors.GREEN+bcolors.BOLD+"Finish"+bcolors.N)
+print("-"*70)
