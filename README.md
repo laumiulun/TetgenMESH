@@ -1,4 +1,4 @@
-#TetgenMESH
+# TetgenMESH
 
 ## Overview ##
 
@@ -73,17 +73,17 @@ An example input file has been provided:
 
 To run the scripts, simply navigate to the folder your test is located and enter the following command:
 
-#####Python 3.7 :
+##### Python 3.7 :
 
 `$../scripts/tetgenMESH.sh`
 
-#####Python 2.7 :
+##### Python 2.7 :
 	
 `$../scripts2.7/tetgenMESH2.7.sh`
 
 The scripts will then ask for input format and input name
 
-The output file will be a in .VTK format which can be open with many open source applications(PARAVIEW). 
+The output file will be a in .VTK format which can be open with many open source post-processing software packages, for example, [ParaView](https://www.paraview.org/).
 
 ## VTK Mesh to Exodous Mesh Conversion ##
 
@@ -91,19 +91,21 @@ To convert VTK Mesh into Exodous:
 
 1. Load the VTK mesh **example.vtk** into ParaView, and "save data" in  Exodus format as **example.e**.
 2. Load the **example.e** back into ParaView and "save data" in **example.csv** as CSV format with the reordered nodal attributes
-3. Remove all the double commas on the first line in "example.csv"(FALCON)
+3. Remove all the double commas on the first line in **"example.csv"**, and save. 
 
-	If you are using vi as the editor, type the follow to remove the commas:
+	If you are using vi as editor, type the following:
 	
 		1%s/,/ /g
 	This replaces all commas from the 1st line and replace it with space. 
 
-4. 
-5. 
+4. **example.e** does not contain Sideset info. Load **"example.e"** in Cubit and assign Sideset IDs to the boundaries. Set the element of type from **"TERA"** to **"TERA4"**, and overwrite **"example.e"**
 
-1. Error in txt label
-2. Error in file format
-3. 
+There should be two files if you follow all the step above:
+
+1. **"example.e"** contains a pure Exodus mesh file with Subset IDs
+2. **"example.csv"** a CSV file containing nodal attributes 
+
+
 ## Contact ##
 
 *	[Github address](https://github.com/laumiulun/TetgenMESH)
