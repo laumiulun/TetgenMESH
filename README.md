@@ -34,7 +34,7 @@ To compile TetGen into a executable file, use the following command:
 	
 `g++ -o tetgen tetgen.cxx predicates.o -lm`
 
-Tetgen is included if you clone falcon directly from github, but requires indivduial user to compile it. Tetgen is located in **falcon/tpl/tetgen**. To compile tetgen, navigate to the folder contain Falcon and follow the instruction above. 
+> Note that Tetgen is included if you clone FALCON directly from github, but requires indivduial user to compile it. Tetgen is located in **falcon/tpl/tetgen**. To compile tetgen, navigate to the folder that contains FALCON and follow the instruction above. 
 
 ## Input Files ##
 TetgenMESH is design to accept two different formats: **ROCKWORKS** and **PETREL**
