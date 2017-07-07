@@ -211,12 +211,12 @@ if formatname == "ROCKWORKS":
                     out.append(line)
             del out[0]
 
-        att.append([])
         # EXTRACT ATT VALUES
+        att.append([])
         for k in range(len(out)):
-
             att[i].append(0)
-            att[i][k]=float(out[k][3])
+            att[i][k]=str(out[k][3])
+            
     # Transpose the att
     tatt=[list(x) for x in zip(*att)]
 

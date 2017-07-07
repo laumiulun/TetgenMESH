@@ -133,7 +133,7 @@ CELL_TYPES 48
 
 
 POINT_DATA 27
-SCALARS Scalars_1 float 
+SCALARS permeability float 
 LOOKUP_TABLE default 
 1.00E-14
 2.00E-14
@@ -162,7 +162,7 @@ LOOKUP_TABLE default
 7.00E-12
 8.00E-12
 9.00E-12
-SCALARS Scalars_2 float 
+SCALARS porosity float 
 LOOKUP_TABLE default 
 0.1
 0.11
@@ -191,7 +191,7 @@ LOOKUP_TABLE default
 0.34
 0.35
 0.36
-SCALARS Scalars_3 float 
+SCALARS rock_density float 
 LOOKUP_TABLE default 
 2500
 2600
@@ -220,7 +220,7 @@ LOOKUP_TABLE default
 4900
 5000
 5100
-SCALARS Scalars_4 float 
+SCALARS rock_specific_heat float 
 LOOKUP_TABLE default 
 920
 920.1
@@ -249,7 +249,7 @@ LOOKUP_TABLE default
 922.4
 922.5
 922.6
-SCALARS Scalars_5 float 
+SCALARS thermal_conductivity float 
 LOOKUP_TABLE default 
 2
 2.1
