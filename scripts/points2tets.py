@@ -1,7 +1,9 @@
-#Include Subprocess
+# Modules
 import os
 import sys
 import subprocess
+
+# USER DEFINE FUNCTION
 
 # FUNCTION to FIND LOCATION
 def findlocation(keyword):
@@ -11,7 +13,7 @@ def findlocation(keyword):
             out=list.index(s)
     return out
 
-# Class of Colors
+# COLORS CLASS
 class bcolors:
     N='\033[0m'             #Normal
     BOLD = '\033[1m'        #Bold
@@ -65,6 +67,7 @@ def redundancy(filetocheck):
 
     print(bcolors.GREEN+'REDUNDANCY CHECK OK'+bcolors.N)
 
+# READ FILE FROM INPUT
 def readfile(filenameinput):
     with open(filenameinput) as f:
         out=[]
@@ -74,12 +77,14 @@ def readfile(filenameinput):
                 line=[str(i) for i in line]  # convert to str
                 out.append(line)
     return out
-# Find
+
+# FIND FILEPATH FROM FILE NAME
 def find(name, path):
     for root, dirs, files in os.walk(path):
         if name in files:
             return os.path.join(root, name)
 
+# READ THE ATTRIBUTES OF THE FILE
 def readatt(filepath):
     with open(filepath) as f:
         return f.readline()
@@ -93,7 +98,6 @@ print("-"*70)
 os2=os.getcwd()   # OS2: Current working directory
 
 # ASK FOR USER INPUT TO FILEFORMAT
-
 while True:
     formatname=raw_input(bcolors.BOLD+"[1] ROCKWORKS OR [2] PETREL \nENTER FORMAT:" + bcolors.N)
     if formatname == '1':  # ROCKWORKS
@@ -114,7 +118,7 @@ while True:
     except BaseException:
         print bcolors.RED+'ERROR: INPUT FILE NOT FOUND'+bcolors.N
 
-# Find files
+# FIND FILES
 i=0
 j=0
 x=[]
@@ -131,15 +135,13 @@ outname=inname[0:f]+'.node'  # print .node absolute filepath
 out=readfile(inname)
 
 """-------------------------------------------------------------------------------------------------------------"""
-# FILE FORMAT CHECK
-# ASK FOR USER INPUT FORMAT
-
-
-if formatname == "1" :  # ROCKWORKS
+# FILE FORMAT MANUIPATION BASE ON FORMAT
+# ROCKWORKS
+if formatname == "1" :
     del out[0]
 
     n=usrname.find('.')
-    string=usrname[:n]  # remove .txt and attribute subset
+    string=usrname[:n]
     fileformat='.txt'
     # Find files
     i=0
@@ -236,11 +238,11 @@ if formatname == "1" :  # ROCKWORKS
     inname=outname
     out=readfile(inname)
 
-elif formatname == "2":  # PETREL
+# PETREL
+elif formatname == "2":
     list = out
 
     locat=int(findlocation('END'))
-    print(locat)
     headlocat=[]
     i=0
     string = 'FLOAT'
@@ -324,10 +326,10 @@ print(bcolors.GREEN+'Tetgen OK'+bcolors.N)
 
 outname2=outname[:-4]+'1.vtk'
 
-if formatname == '2':
-    NullV=int(-998)
-elif formatname == '1':
+if formatname == '1':
     NullV=int(-10000)
+elif formatname == '2':
+    NullV=int(-998)
 
 # NUMBER OF ATTRIBUTES (subtracting XYZ)
 NumsA=NumsColu-3
@@ -364,7 +366,7 @@ with open (outname2, "a+") as f:
         print("Writing Attributes ["+str(j+1)+']')
     print(bcolors.BOLD+"[DONE]"+bcolors.N)
 
-
+# RENAME OUTPUT FILE
 os.rename(outname2, outname2.replace(".1",""))
 print("-"*70)
 print(bcolors.GREEN+bcolors.BOLD+"Finish"+bcolors.N)
