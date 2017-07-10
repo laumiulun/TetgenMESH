@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 import sys, os 
 
 
@@ -6,4 +6,4 @@ x=os.getcwd()
 y=os.path.join(x,'scripts')
 
 sys.path.append(y)
-import runtest
+import points2tets

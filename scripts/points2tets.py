@@ -18,38 +18,40 @@ class bcolors:
     UNDERL = '\033[4m'      #Underline
     RED = '\033[91m'        #RED
     GREEN = '\033[42m'      #GREEN
-    
+
 # FUNCTION TO OUTPUT ERROR
 def fileERROR(command,message):
     try:
         f= open(command)
-    except FileNotFoundError:
-        print(bcolors.RED+'ERROR: ' +str(message) +' NOT FOUND'+bcolors.N)
+    except BaseException:
+        print bcolors.RED+'ERROR: ' +str(message) +' NOT FOUND'+bcolors.N
         sys.exit()
-        
+
 # FUNCTION REDUNDANCY
 def redundancy(filetocheck):
+    k=0
     for i in range(len(filetocheck)-1):
-        
+
         #OPEN first file:
-        with open(filetocheck[i]) as f:
+        with open(str(filetocheck[i])) as f:
             out=[]
             for line in f:
                 line = line.split()
                 if line:
-                    line=[str(i) for i in line]  # convert to str
+                    line=[str(k) for k in line]  # convert to str
                     out.append(line)
         del out[0]
-        
+
         #OPEN second file:
-        with open(filetocheck[i+1]) as f:
+        with open(str(filetocheck[i])) as f:
             out2=[]
             for line in f:
                 line = line.split()
                 if line:
-                    line=[str(i) for i in line]  # convert to str
+                    line=[str(k) for k in line]  # convert to str
                     out2.append(line)
-        del out2[0]                   
+        del out2[0]
+
 
         # Compare the 2 files
         for i in range(len(out)):
@@ -60,7 +62,8 @@ def redundancy(filetocheck):
                     print('ERROR, XYZ DOES NOT MATCH')
                     print(os.path.basename(filetocheck[i+1]),' COORDINATES DOES NOT MATCH')
                     sys.exit()
-    print('REDUNDANCY CHECK OK')
+
+    print(bcolors.GREEN+'REDUNDANCY CHECK OK'+bcolors.N)
 
 def readfile(filenameinput):
     with open(filenameinput) as f:
@@ -71,19 +74,45 @@ def readfile(filenameinput):
                 line=[str(i) for i in line]  # convert to str
                 out.append(line)
     return out
+# Find
+def find(name, path):
+    for root, dirs, files in os.walk(path):
+        if name in files:
+            return os.path.join(root, name)
+
+def readatt(filepath):
+    with open(filepath) as f:
+        return f.readline()
+    f.close()
 
 # START OF THE SCRIPTS
 #############################################################################
 
+print("-"*70)
 # GET CURRENT WORKING DIRECTORY AND MOVE INTO TEST DIRECTORY
 os2=os.getcwd()   # OS2: Current working directory
 
-# ASK FOR USER INPUT TO THE FILE
-usrname=input(bcolors.BOLD+'Enter Input File Name: '+bcolors.N)
-inname=os.path.join(os2,usrname)
+# ASK FOR USER INPUT TO FILEFORMAT
 
-print('usrname:',usrname)
-print('inname:',inname)
+while True:
+    formatname=raw_input(bcolors.BOLD+"[1] ROCKWORKS OR [2] PETREL \nENTER FORMAT:" + bcolors.N)
+    if formatname == '1':  # ROCKWORKS
+        break
+    elif formatname == '2':  # PETREL
+        break
+    else:
+        print(bcolors.RED +"ERROR: FILE FORMAT NOT FOUND" + bcolors.N)
+
+# ASK FOR USER INPUT TO THE FILE
+while True:
+    usrname=raw_input(bcolors.BOLD+'Enter Input File Name: '+bcolors.N)
+    inname=os.path.join(os2,usrname)
+
+    try:
+        f= open(inname)
+        break
+    except BaseException:
+        print bcolors.RED+'ERROR: INPUT FILE NOT FOUND'+bcolors.N
 
 # Find files
 i=0
@@ -96,35 +125,17 @@ for root, dirs, files in os.walk(os2, topdown=True):    # Find all files in the 
             x.append([])
             x[i-1]=(os.path.join(root, name))
 
-#print(bcolors.BOLD+'Input WD:'+ bcolors.N + inname)
-
 f=inname.find(".")
 outname=inname[0:f]+'.node'  # print .node absolute filepath
 
-#print(bcolors.BOLD+'Output WD:'+bcolors.N + outname)
-
-#FILE NOT FIND ERROR
-fileERROR(inname,"INPUT FILE")
-
-# OPEN INPUT FILE(TXT)
-##with open(inname) as f:
-##    out=[]
-##    for line in f:
-##        line = line.split()
-##        if line:
-##            line=[str(i) for i in line]  # convert to str
-##            out.append(line)
-
 out=readfile(inname)
-
-
 
 """-------------------------------------------------------------------------------------------------------------"""
 # FILE FORMAT CHECK
 # ASK FOR USER INPUT FORMAT
-formatname=input(bcolors.BOLD+"ENTER FORMATS(ROCKWORKS OR PETREL): " + bcolors.N)
 
-if formatname == "ROCKWORKS":
+
+if formatname == "1" :  # ROCKWORKS
     del out[0]
 
     n=usrname.find('.')
@@ -140,9 +151,32 @@ if formatname == "ROCKWORKS":
                 j+=1
                 x.append([])
                 x[i-1]=(os.path.join(root, name))
-            
+
+
     # Call redundancy FUNCTION
     redundancy(x)
+
+    # Extract Header Data
+    i=0
+    rheader=[]
+    for i in range(len(x)):
+        rheader.append([])
+        rheader[i]=readatt(x[i])
+
+    i=0
+    kheader=[]
+    for i in range(len(rheader)):
+        string=rheader[i]
+        kheader.append([])
+        kheader[i]=string.replace('\r\n','')
+    del rheader
+
+    i=0
+    header=[]
+    for i in range(len(kheader)):
+        string=kheader[i]
+        header.append([])
+        header[i]=string.replace('X Y Z ','')
 
     # Extract XYZ data
     with open(x[0]) as f:
@@ -153,6 +187,8 @@ if formatname == "ROCKWORKS":
                     line=[str(i) for i in line]  # convert to str
                     out.append(line)
             del out[0]
+
+
     xyz=[]
     for i in range(len(out)):
         xyz.append([])
@@ -171,7 +207,7 @@ if formatname == "ROCKWORKS":
             for line in f:
                 line = line.split()
                 if line:
-                    line=[str(i) for i in line]  # convert to str
+                    line=[str(j) for j in line]  # convert to str
                     out.append(line)
             del out[0]
 
@@ -179,7 +215,7 @@ if formatname == "ROCKWORKS":
         att.append([])
         for k in range(len(out)):
             att[i].append(0)
-            att[i][k]=float(out[k][3])
+            att[i][k]=str(out[k][3])
 
     # Transpose the att
     tatt=[list(x) for x in zip(*att)]
@@ -190,8 +226,7 @@ if formatname == "ROCKWORKS":
         sourceout.append([])
         sourceout[i]=xyz[i]+tatt[i]
 
-    with open (outname,"w+") as f:
-        
+    with open (outname,"w") as f:
         for i in range(len(sourceout)):
             for j in range(len(sourceout[0])):
                 f.write(str(sourceout[i][j]))
@@ -199,14 +234,35 @@ if formatname == "ROCKWORKS":
             f.write('\n')
 
     inname=outname
-elif formatname == "PETREL":
+    out=readfile(inname)
+
+elif formatname == "2":  # PETREL
     list = out
+
     locat=int(findlocation('END'))
+    print(locat)
+    headlocat=[]
+    i=0
+    string = 'FLOAT'
+    for s in list:
+        if string in str(s):
+            headlocat.append(0)
+            headlocat[i]=list.index(s)
+            i+=1
+
+    pheader=[]
+    for i in range(len(headlocat)):
+        pheader.append(0)
+        pheader[i]=out[headlocat[i]]
+
+    header=[]
+    for i in range(len(pheader)):
+        string=pheader[i][0]
+        header.append([])
+        header[i]=string.replace('FLOAT,','')
+
     del out[0:locat+1]
-    
-else:
-    print(bcolors.RED +"ERROR: FILE FORMAT NOT FOUND" + bcolors.N)
-    exit()
+
 
 """-------------------------------------------------------------------------------------------------------------"""
 
@@ -214,7 +270,7 @@ else:
 NumsRows=len(out)
 NumsColu=(len(out[0]))
 
-print('Reading Input File'+"."*15,end="")
+sys.stdout.write('Reading Input File'+'.'*15)
 
 # ORGANIZE DATA INTO COLUMNS AND ROWS
 x=[]
@@ -224,16 +280,16 @@ for j in range(NumsRows):
         x[j].append(0)
         x[j][i]=out[j][i]
 
-print(bcolors.BOLD+"[DONE]"+bcolors.N) 
+print(bcolors.BOLD+"[DONE]"+bcolors.N)
 
 # ADD NUMBERING TO THE FRONT OF EACH NODES
 for i in range(NumsRows):
     x[i].insert(0,i+1)
-    
-# OUTPUT FILES WITH ADDED HEADER FOR INPUT TO TETGEN
-print('Convert to .node'+"."*17,end="")
 
-with open(outname, "w+") as f:
+# OUTPUT FILES WITH ADDED HEADER FOR INPUT TO TETGEN
+sys.stdout.write('Convert to .node'+"."*17 )
+
+with open(outname, "w") as f:
     M=(str(NumsRows)+' 3 1 1''\n')
     f.write(M)
     for j in range(len(x)):
@@ -243,25 +299,23 @@ with open(outname, "w+") as f:
         f.write('\n')
 
 # STATE OUTPUT
-print(bcolors.BOLD+"[DONE]"+bcolors.N) 
-print('Number of Nodes:',NumsRows)
+print(bcolors.BOLD+"[DONE]"+bcolors.N)
+print 'Number of Nodes:',NumsRows
+
 """-------------------------------------------------------------------------------------------------------------"""
 
 ### CALL PROCESS TO RUN TETGEN
 print(bcolors.BOLD+"CALLING TETGEN..."+bcolors.N)
-print("-"*50)
+print("-"*70)
 
 #FIND TETGEN DIR
 os5=os.path.dirname(os.path.dirname(os2))
 tetgen='tetgen'
-for root, dirs, files in os.walk(os5, topdown=True):    # Find all files in the the dir
-    for name in files:
-        if tetgen in name:
-            pathtotetgen=(os.path.join(root, name))
 
-# 
+# Find the path of tetgen
+pathtotetgen=find(tetgen,os5)
+
 output=(pathtotetgen + " -kNEF " + outname)
-
 
 subprocess.call(output,shell=True)
 print(bcolors.GREEN+'Tetgen OK'+bcolors.N)
@@ -270,9 +324,9 @@ print(bcolors.GREEN+'Tetgen OK'+bcolors.N)
 
 outname2=outname[:-4]+'1.vtk'
 
-if formatname == 'PETREL':
+if formatname == '2':
     NullV=int(-998)
-elif formatname == 'ROCKWORKS':
+elif formatname == '1':
     NullV=int(-10000)
 
 # NUMBER OF ATTRIBUTES (subtracting XYZ)
@@ -284,12 +338,12 @@ for i in range(NumsRows):
     x.append([])
     for j in range(NumsA):
         x[i].append(0)
-        if float(out[i][j])<NullV:        
+        if float(out[i][j])<NullV:
             x[i][j]=-1;
         else:
             x[i][j]=out[i][j+3]
 
-print("-"*50)
+print("-"*70)
 print("Writing Attributes...")
 
 # OUTPUT INTO VTK
@@ -298,17 +352,20 @@ with open (outname2, "a+") as f:
     M= 'POINT_DATA ' + str(NumsRows)+ '\n'
     f.write(M)
     for j in range(NumsA):
-        M='SCALARS Scalars_'+str(j+1)+' float \nLOOKUP_TABLE default \n'
+        M='SCALARS '+header[j]+' float \nLOOKUP_TABLE default \n'
         f.write(M)
         for i in range(NumsRows):
             if float(x[i][j])<NullV:
                 f.write('-1.0');
                 f.write('\n')
             else:
-                f.write(x[i][j])
+                f.write(str(x[i][j]))
                 f.write('\n')
         print("Writing Attributes ["+str(j+1)+']')
     print(bcolors.BOLD+"[DONE]"+bcolors.N)
 
-print("-"*50)
+
+os.rename(outname2, outname2.replace(".1",""))
+print("-"*70)
 print(bcolors.GREEN+bcolors.BOLD+"Finish"+bcolors.N)
+print("-"*70)

@@ -1,113 +1,134 @@
-# TetgenMESH
+# A Workflow of Tetrahedral Mesh Generation with Nodal Attributes from a Point Cloud
 
-## Overview ##
+## Developers ##
 
-Tetgen is a program developed by Weierstrass Institute of Applied Analysis and Stochastics (WISA) to generate tetrahedral meshes of any 3D polyhedral domains. 
+* Miu-Lun (Andy) Lau
+* Yidong Xia
 
-TetgenMESH is script developed to provide [FALCON](https://github.com/idaholab/falcon)(Application of [MooseFramework](http://mooseframework.org/)) with the necessary input mesh data.
+## Introduction
 
-This tutorial will be separate into two parts.
+This document describes a workflow of how to generate a tetrahedral mesh with nodal attributes from a point cloud. In reservoir engieering, it is flexible to use a tetrahedral mesh for representing a geological subsurface domain, and  the nodal attributes in a mesh can be used to represent __material properties__ of interest, e.g., permeability, porosity, rock density and thermal conductivity. Usually, those properties can be provided from the output of reservoir modeling software (e.g. [RockWorks](https://www.rockware.com/product/overview.php?id=165) or [Petrel](https://www.software.slb.com/products/petrel)) in the form of (x, y, z) node coordinates with nodal attributes.
 
-**Part 1** will be covering the running of Tetgen Meshing scripts
+The workflow consists of two parts:
 
-**Part 2** will be covering the conversion from VTK Mesh to Exodus Mesh
+* **Part 1. From Point Cloud to VTK Mesh** describes the generation of a VTK mesh from a point cloud.
 
-## Requirements ##
-* [Python 2.7.2 or 3.6.1](https://www.python.org/downloads/) 
+* **Part 2. From VTK Mesh to Exodus Mesh** describes the conversion from a VTK mesh to an Exodus mesh.
+
+Currently **Part 1** is automated with a Python script, whereas **Part 2** mostly invovles manual operation. Automation of **Part 2** will be developed in future.
+
+## Prerequisites
+
+A list of software packages required in this workflow is as below:
+
+* [Python](https://www.python.org/downloads/) (Version 2.7.2)
 * C++ compiler
-* [Tetgen1.5](http://wias-berlin.de/software/tetgen/)
-* [Cubit 5.2](https://cubit.sandia.gov)
+* [TetGen](http://wias-berlin.de/software/tetgen/) (Version 1.5)
+* [ParaView](https://www.paraview.org/)
+* [Cubit](https://cubit.sandia.gov)
 
-## Compile and Install Tetgen ##
-In-order to use TetGen, first download TetGen v1.5 from [Tetgen1.5](http://wias-berlin.de/software/tetgen/)
+### Compile TetGen
 
-Before compiling tetgen, first put all sources files, **tetgen.h**, **tetgen.cxx**, and **predicates.cxx** and **makefile** into one directory. 
+In this workflow, the open-source mesh generator TetGen is used to generate a VTK tetrahedral mesh containing nodal attributes from a point cloud. The FALCON repository provides the source code of TetGen in directory __falcon/tpl/tetgen/__. In the command-line window, navigate to directory __falcon/tpl/tetgen/__, and enter the command
 
-You also need to specify the C++ compiler to be used(Default is GNU C++ compiler)
+```
+make
+```
+to compile the source code and generate an executable file __falcon/tpl/tetgen/tetgen__. Users do not need to call TetGen directly by themselves. Instead, TetGen is called in a Python script __falcon/scripts/points2tets.py__. The GNU C++ compiler **g++** is the default compiler in file __falcon/tpl/tetgen/makefile__; see line 14:
 
-To compile Tetgen, first navigate to the directory Tetgen is located, and compile **predicates.cxx** to get an object file:
-	
-	
-`g++ -c predicates.cxx`
+```
+CXX = g++
+```
 
-To compile TetGen into a executable file, use the following command:
-	
-`g++ -o tetgen tetgen.cxx predicates.o -lm`
+## Workflow Part 1: From Point Cloud to VTK Mesh
 
-> Note that Tetgen is included if you clone FALCON directly from github, but requires indivduial user to compile it. Tetgen is located in **falcon/tpl/tetgen**. To compile tetgen, navigate to the folder that contains FALCON and follow the instruction above. 
+Currently, a working directory must be one located under __falcon/test/__, which is a limitation as a trade-off for requiring minimum user's effort. Two examples can be found in FALCON repository: one is to start from *RockWorks* data, and the other is to start from *Petrel* data.
 
-## Input Files ##
-TetgenMESH is design to accept two different formats: **ROCKWORKS** and **PETREL**
+### Example: Start from *RockWorks* Data 
 
-### ROCKWORKS ###
-The input file will contain nodal coordinates(XYZ) and one set of attribute(if any). The number of attributes will be the number of files inside the test folder. 
+Follow the steps:
 
-A two files attribute example will be:
+* Navigate to directory __falcon/tests/PT\_TH\_injection\_csvreader\_RockWorks__, and enter the command:
 
-`example.<Attribute1>.txt`
+```
+../../scripts/generate_vtk_tet_mesh_from_point_cloud.sh
+```
 
-`example.<Attribute2>.txt`
- 
-And each file will have the nodal coordinates and corresponding attribute data with the format: 
+* Enter __1__ at the prompt:
 
-		< X > < Y > < Z > < Attributes 1 >
+```
+----------------------------------------------------------------------
+[1] ROCKWORKS OR [2] PETREL
+ENTER FORMAT:
+```
 
-TetgenMESH will check and compare the nodal coordinates of each files
+* Enter __example.permeability.txt__ at the prompt:
 
-An example input file has been provided:
-[Rockworks Input File](https://github.com/laumiulun/TetgenMESH/blob/master/tests/rockworks/example.porosity.txt)
+```
+Enter Input File Name:
+```
 
-### PETREL ###
-The input file is will be consist of nodal coordinates and any numbers of attributes. The format of the input file is as follow:
+* A tetrahedral mesh file named __example.vtk__ is generated at the end.
 
-The end of the header must include `END` to signify the scripts as the end of the header
-#### Header ####
+Note:
 
-		< X > < Y > < Z > < Attributes 1 > < Attributes 2 > < Attributes n >
+* __example.permeability.txt__ is one of the five *RockWorks* data files in the directory, with the other four named __example.porosity.txt__, __example.rock\_density.txt__, __example.rock\_specific\_heat.txt__ and __example.thermal\_conductivity.txt__. They have to be individual files because *RockWorks* outputs them individually.
 
-An example input file has been provided:
-[Petrel Input File](https://github.com/laumiulun/TetgenMESH/blob/master/tests/petrel/example.txt)
+* Each data file contains only one type of nodal material property, as indicated by the file names. In each file, the data  looks like *`<x> <y> <z> <attribute>`* in each line. 
 
+* It is OK to enter any of the five file names, because the Python script will read through all files named in the form of __example.*.txt__. The resulting __example.vtk__ file contains all the five sets of material properties.
 
-## Using TetgenMESH ##
+* Users are responsible for ensuring that such a file is provided in the correct format.
 
-To run the scripts, simply navigate to the folder your test is located and enter the following command:
+### Example: Start from *Petrel* Data
 
-##### Python 3.7 :
+Follow the steps:
 
-`$../scripts/tetgenMESH.sh`
+* Navigate to directory __falcon/tests/PT\_TH\_injection\_csvreader\_Petrel__, and enter the command:
 
-##### Python 2.7 :
-	
-`$../scripts2.7/tetgenMESH2.7.sh`
+```
+../../scripts/generate_vtk_tet_mesh_from_point_cloud.sh
+```
 
-The scripts will then ask for input format and input name
+* Enter __2__ at the prompt:
 
-The output file will be a in .VTK format which can be open with many open source post-processing software packages, for example, [ParaView](https://www.paraview.org/).
+```
+----------------------------------------------------------------------
+[1] ROCKWORKS OR [2] PETREL
+ENTER FORMAT:
+```
 
-## VTK Mesh to Exodous Mesh Conversion ##
+* Enter __example.txt__ at the prompt:
+
+```
+Enter Input File Name:
+```
+
+* A tetrahedral mesh file named __example.vtk__ is generated at the end.
+
+Note:
+
+* __example.txt__ is a *Petrel* data file containing five sets of nodal material properties: __permeability__, __porosity__, __rock\_density__, __rock\_specific\_heat__ and __thermal\_conductivity__.
+
+* Users are responsible for ensuring that such a file is provided in the correct format.
+
+## Workflow Part 2: VTK Mesh to Exodous Mesh
 
 To convert VTK Mesh into Exodous:
 
-1. Load the VTK mesh **example.vtk** into ParaView, and "save data" in  Exodus format as **example.e**.
-2. Load the **example.e** back into ParaView and "save data" in **example.csv** as CSV format with the reordered nodal attributes
-3. Remove all the double commas on the first line in **"example.csv"**, and save. 
+* Load the VTK mesh **example.vtk** into ParaView, and "save data" in  Exodus format as **example.e**.
+* Load the **example.e** back into ParaView and "save data" in **example.csv** as CSV format with the reordered nodal attributes
+* Remove all the double commas on the first line in **"example.csv"**, and save. 
 
-	If you are using vi as editor, type the following:
-	
-		1%s/,/ /g
-	This replaces all commas from the 1st line and replace it with space. 
+If you are using vi as editor, type the following in the vi command environment:
 
-4. **example.e** does not contain Sideset info. Load **"example.e"** in Cubit and assign Sideset IDs to the boundaries. Set the element of type from **"TERA"** to **"TERA4"**, and overwrite **"example.e"**
+:%s/,/ /g
+This replaces all commas from the 1st line and replace it with space. 
 
-There should be two files if you follow all the step above:
+* **example.e** does not contain Sideset info. Load **"example.e"** in Cubit and assign Sideset IDs to the boundaries. Set the element of type from **"TERA"** to **"TERA4"**, and overwrite **"example.e"**
 
-1. **"example.e"** contains a pure Exodus mesh file with Subset IDs
-2. **"example.csv"** a CSV file containing nodal attributes 
+At the end, there should be two files if you follow all the steps above:
 
+* **"example.e"** contains an Exodus mesh file with Subset IDs, but without any nodal material properties. FALCON reads this file in the [mesh] keyword block in the FALCON input script.
+* **"example.csv"** a CSV file containing the nodal material properties. FALCON reads this file in the [VectorPostprocessors] keyword block.
 
-## Contact ##
-
-*	[Github address](https://github.com/laumiulun/TetgenMESH)
-*	Developer: Miu Lun Lau
-* 	Email: miulun.lau@inl.gov
