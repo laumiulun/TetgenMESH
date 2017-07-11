@@ -1,3 +1,10 @@
+#==============================================================================
+#
+#  Program:   TetgenMesh
+#.
+#==============================================================================
+
+
 # Modules
 import os
 import sys
@@ -311,7 +318,9 @@ print(bcolors.BOLD+"CALLING TETGEN..."+bcolors.N)
 print("-"*70)
 
 #FIND TETGEN DIR
-os5=os.path.dirname(os.path.dirname(os2))
+from os.path import expanduser
+os5=expanduser("~")
+#os5=os.path.dirname(os.path.dirname(os2)
 tetgen='tetgen'
 
 # Find the path of tetgen
