@@ -1,4 +1,0 @@
-
-export PYTHONPATH="$PYTHONPATH:/home/andy/Desktop/paraview/lib/paraview-5.4:/home/andy/Desktop/paraview/lib/python2.7/site-packages:/home/andy/Desktop/paraview/bin:/home/andy/Desktop/paraview/lib/python2.7/site-packages/vtk"
-
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/home/andy/Desktop/paraview/lib/paraview-5.4"
