@@ -112,7 +112,7 @@ while True:
     elif formatname == '2':  # PETREL
         break
     else:
-        print(bcolors.RED +"ERROR: FILE FORMAT NOT FOUND" + bcolors.N)
+        print(bcolors.RED +"ERROR: FILE FORMAT NOT FOUND \n" + bcolors.N)
 
 # ASK FOR USER INPUT TO THE FILE
 while True:
@@ -379,4 +379,5 @@ with open (outname2, "a+") as f:
 os.rename(outname2, outname2.replace(".1",""))
 print("-"*70)
 print(bcolors.GREEN+bcolors.BOLD+"Finish"+bcolors.N)
+print("Output VTK file: " +outname2.replace(".1",""))
 print("-"*70)

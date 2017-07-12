@@ -120,6 +120,21 @@ To convert VTK Mesh into Exodous:
 * Load the **example.e** back into ParaView and "save data" in **example.csv** as CSV format with the reordered nodal attributes
 * Remove all the double commas on the first line in **"example.csv"**, and save. 
 
+A scripts have been prepared to automate the conversion from **example.vtk** to **example.e** and **example.csv**.
+
+To use the automated script:
+
+First open the paraview, and navigate to **Tools** and **Python Shell**
+![Tools](https://raw.githubusercontent.com/laumiulun/TetgenMESH/devel/contents/tools.png)
+This is open a new window which is the python shell. From there choose **Run Scripts**
+
+![Python_shell](https://raw.githubusercontent.com/laumiulun/TetgenMESH/devel/contents/shell.png)
+
+The script is located in **../tetgenmesh/scripts/paraview2exodus.py**. Enter the filename into the console
+ 
+![Console](https://raw.githubusercontent.com/laumiulun/TetgenMESH/devel/contents/console.png)
+
+
 If you are using vi as editor, type the following in the vi command environment:
 
 :%s/,/ /g
