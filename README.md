@@ -116,36 +116,38 @@ Note:
 
 To convert VTK Mesh into Exodous:
 
-* Load the VTK mesh **example.vtk** into ParaView, and "save data" in  Exodus format as **example.e**.
-* Load the **example.e** back into ParaView and "save data" in **example.csv** as CSV format with the reordered nodal attributes
-* Remove all the double commas on the first line in **"example.csv"**, and save. 
-
-A scripts have been prepared to automate the conversion from **example.vtk** to **example.e** and **example.csv**.
+A scripts have been prepared to automate the conversion from **example.vtk** to **example.e** and **example.csv**. [1]
 
 To use the automated script:
 
-First open the paraview, and navigate to **Tools** and **Python Shell**
+First open the paraview, and navigate to **Tools** and **Python Shell**,
 ![Tools](https://raw.githubusercontent.com/laumiulun/TetgenMESH/devel/contents/tools.png)
 
-This is open a new window which is the python shell. From there choose **Run Scripts**
+This is open a new window which is the python shell. From there choose **Run Scripts**,
 
 ![Python_shell](https://raw.githubusercontent.com/laumiulun/TetgenMESH/devel/contents/shell.png)
 
-The script is located in **../tetgenmesh/scripts/paraview2exodus.py**. Afterward, enter the filename into the console.
+The script is located in **../tetgenmesh/scripts/paraview2exodus.py**. Afterward, the console will ask for input file,
  
 ![Console](https://raw.githubusercontent.com/laumiulun/TetgenMESH/devel/contents/console.png)
 
+* **example.e** does not contain Sideset info. Load **"example.e"** in Cubit and load the journal file to automatially assign Sideset IDs and element type. 
 
+To use the journal file, first import **example.e** into Cubit, then select **tools**,
 
-If you are using vi as editor, type the following in the vi command environment:
+![Tools](https://raw.githubusercontent.com/laumiulun/TetgenMESH/devel/contents/cubit.png)
 
-:%s/,/ /g
-This replaces all commas from the 1st line and replace it with space. 
+and choose **Run Journal File**. The script is located in **../tetgenmesh/scripts/sideset.jou**. 
 
-* **example.e** does not contain Sideset info. Load **"example.e"** in Cubit and assign Sideset IDs to the boundaries. Set the element of type from **"TERA"** to **"TERA4"**, and overwrite **"example.e"**
 
 At the end, there should be two files if you follow all the steps above:
 
 * **"example.e"** contains an Exodus mesh file with Subset IDs, but without any nodal material properties. FALCON reads this file in the [mesh] keyword block in the FALCON input script.
 * **"example.csv"** a CSV file containing the nodal material properties. FALCON reads this file in the [VectorPostprocessors] keyword block.
 
+
+### Side Note[ ]: 
+
+* [1] Conversion from **example.vtk** to **example.e** and **example.csv** occurs inside the paraview GUI python shell. Fully automated process inside terminal had been explored with errors encountered on different operating system. By using python shell inside paraview GUI client, it can guarantee compatibility across different paraview versions and operating system.
+* [2] Additional scripting has been developed for **example.csv**, because Falcon CSV reader does not accept commas on the header of file.
+* 
