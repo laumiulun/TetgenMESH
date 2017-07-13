@@ -131,14 +131,13 @@ The script is located in **../tetgenmesh/scripts/paraview2exodus.py**. Afterward
  
 ![Console](https://raw.githubusercontent.com/laumiulun/TetgenMESH/devel/contents/console.png)
 
-* **example.e** does not contain Sideset info. Load **"example.e"** in Cubit and load the journal file to automatially assign Sideset IDs and element type. 
+* **example.e** does not contain any Sideset info. To assign Sideset IDs,  load **"example.e"** in Cubit and load the journal file to automatially assign Sideset IDs and element type. 
 
-To use the journal file, first import **example.e** into Cubit, then select **tools**,
+To use the journal file, first import **example.e** into Cubit, then select **Tools**,
 
 ![Tools](https://raw.githubusercontent.com/laumiulun/TetgenMESH/devel/contents/cubit.png)
 
-and choose **Run Journal File**. The script is located in **../tetgenmesh/scripts/sideset.jou**. 
-
+and choose **Run Journal File**. The script is located in **../tetgenmesh/scripts/sideset.jou**. Afterward, save and replace **example.e**.
 
 At the end, there should be two files if you follow all the steps above:
 
@@ -150,4 +149,3 @@ At the end, there should be two files if you follow all the steps above:
 
 * [1] Conversion from **example.vtk** to **example.e** and **example.csv** occurs inside the paraview GUI python shell. Fully automated process inside terminal had been explored with errors encountered on different operating system. By using python shell inside paraview GUI client, it can guarantee compatibility across different paraview versions and operating system.
 * [2] Additional scripting has been developed for **example.csv**, because Falcon CSV reader does not accept commas on the header of file.
-* 
