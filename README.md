@@ -131,13 +131,34 @@ The script is located in **../tetgenmesh/scripts/paraview2exodus.py**. Afterward
  
 ![Console](https://raw.githubusercontent.com/laumiulun/TetgenMESH/devel/contents/console.png)
 
-* **example.e** does not contain any Sideset info. To assign Sideset IDs,  load **"example.e"** in Cubit and load the journal file to automatially assign Sideset IDs and element type. 
+**example.e** does not contain any Sideset info. To assign Sideset IDs,  Select **File** and import **"example.e"** in Cubit.
 
-To use the journal file, first import **example.e** into Cubit, then select **Tools**,
+![Python_shell](https://raw.githubusercontent.com/laumiulun/TetgenMESH/devel/contents/file.png)
 
-![Tools](https://raw.githubusercontent.com/laumiulun/TetgenMESH/devel/contents/cubit.png)
+To assign SideSet IDs, click on the Yellow Cube on the command toolbar, and choose **exodus sideset**
 
-and choose **Run Journal File**. The script is located in **../tetgenmesh/scripts/sideset.jou**. Afterward, save and replace **example.e**.
+![Python_shell](https://raw.githubusercontent.com/laumiulun/TetgenMESH/devel/contents/sideset.png)
+
+Follow the table below to set all SideSet IDs
+
+| SideSet IDs Number|Corrpsonding Facet|
+|:-----------------:|:----------------:| 
+| 1                 | X-min            | 
+| 2                 | X-max            | 
+| 3                 | Y-min            |
+| 4                 | Y-max            |
+| 5                 | Z-min            |
+| 6                 | Z-max            | 
+
+Afterward, we need to change the element type from **TERA** to **TERA4**. 
+
+To change to **TERA4**, expand **Blocks** on the powertools on the right, 
+
+![Python_shell](https://raw.githubusercontent.com/laumiulun/TetgenMESH/devel/contents/powertools.png)
+
+Choose the Block(Default is Block 10) and change the Element type to **TERA4** 
+
+![Python_shell](https://raw.githubusercontent.com/laumiulun/TetgenMESH/devel/contents/elementtype.png)
 
 At the end, there should be two files if you follow all the steps above:
 
@@ -147,5 +168,5 @@ At the end, there should be two files if you follow all the steps above:
 
 ### Side Note[ ]: 
 
-* [1] Conversion from **example.vtk** to **example.e** and **example.csv** occurs inside the paraview GUI python shell. Fully automated process inside terminal had been explored with errors encountered on different operating system. By using python shell inside paraview GUI client, it can guarantee compatibility across different paraview versions and operating system.
+* [1] Conversion from **example.vtk** to **example.e** and **example.csv** occurs inside the paraview GUI python shell. Fully automated process inside terminal had been explored with errors encountered on different operating system. By using python shell inside paraview GUI client, it can guarantee compatibility across different paraview versions and operating systems.
 * [2] Additional scripting has been developed for **example.csv**, because Falcon CSV reader does not accept commas on the header of file.
