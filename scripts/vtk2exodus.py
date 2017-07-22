@@ -19,20 +19,28 @@ from os.path import expanduser
 os2=expanduser("~")
 
 # ENTER INPUT FILENAME
+##while True:
+##    filename=raw_input("Enter filename: ")
+##
+##    try:
+##        f=find(filename,os2)
+##        open(f)
+##        break
+##    except BaseException:
+##        print '\n ERROR: INPUT FILE NOT FIND'
 while True:
-    filename=raw_input("Enter filename:")
+    filename=raw_input('Enter Absolute Path of the File")
 
     try:
-        f=find(filename,os2)
-        open(f)
+        f=open(filename)
         break
     except BaseException:
         print '\n ERROR: INPUT FILE NOT FIND'
-
-inname=find(filename,os2)
+    
+#inname=find(filename,os2)
 ename=inname[:-3]+"e"          # exodus name
-csvname=inname[:-3]+"csv"      # CSV name
-
+csvname=inname[:-3]+".csv"      # CSV name
+csvname2=inname[:-4]+".0.csv"   #CSV2name
 # PARAVIEW PYTHON
 #----------------------------------------------------#
 
@@ -56,6 +64,17 @@ SaveData(csvname, proxy=examplee)
 
 #### uncomment the following to render all views
 # RenderAllViews()
-# alternatively, if you want to write images, you can use SaveScreenshot(...).
+# alternatively, if you want to write images, you can use SaveScreenshot(...)
 
 print("\n Done")
+# MODIFY CSV FILE
+#----------------------------------------------------#
+with open(csvname2) as fin:
+    lines = fin.readlines()
+lines[0] = lines[0].replace(',','')
+
+with open(csvname2, 'w') as fout:
+    for line in lines:
+        fout.write(line)
+print("\n Commas Removed")
+
