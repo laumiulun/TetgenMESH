@@ -31,6 +31,7 @@ os2=expanduser("~")
 
 while True:
     print os.getcwd()
+    print("-"*50)
     filename=raw_input('Enter Absolute Path of the File: ')
     try:
         f=open(filename)
@@ -42,6 +43,7 @@ inname=filename
 ename=inname[:-3]+"e"          # exodus name
 csvname=inname[:-3]+".csv"      # CSV name
 csvname2=inname[:-4]+".0.csv"   #CSV2name
+print ("\n"+filename)
 print "\nFile Found "
 
 # Find Attributes Name from VTK file
@@ -57,10 +59,10 @@ attName=[]
 for i in range(len(attLine)):
     attName.append([])
     attName[i]=attLine[i][1]
-
+print "Finding Attributes in VTK file"
 #----------------------------------------------------#
 # ParaView PYTHON
-
+print("-"*75)
 #### import the simple module from the paraview
 from paraview.simple import *
 #### disable automatic camera reset on 'Show'
@@ -68,24 +70,29 @@ paraview.simple._DisableFirstRenderCameraReset()
 
 # create a new 'Legacy VTK Reader'
 examplevtk = LegacyVTKReader(FileNames=[inname])
-
+print(filename+" is loaded into ParaView")
+      
 # save data
 SaveData(ename, proxy=examplevtk)
+print(ename+" is saved in working directory")
 
 # create a new 'ExodusIIReader'
 examplee = ExodusIIReader(FileName=[ename])
-examplee.PointVariables = []
+print(ename+" is loaded in ParaView")
 
+examplee.PointVariables = []
+print "Loaded attributes into ParaView"
 examplee.PointVariables = attName
 
 # save data
 SaveData(csvname, proxy=examplee, UseScientificNotation=1)
+print(csvname+" is saved in working directory")
 #### uncomment the following to render all views
 # RenderAllViews()
 # alternatively, if you want to write images, you can use SaveScreenshot(...)
 
 print("ParaView Python Completed")
-
+print("-"*75)
 #----------------------------------------------------#
 # MODIFY CSV FILE
 with open(csvname2) as fin:
@@ -96,10 +103,11 @@ with open(csvname2, 'w') as fout:
     for line in lines:
         fout.write(line)
 
-print("Quotes Removed")
+print("Quotes in CSV removed")
 
 # Replace Name
 os.rename(csvname2, csvname2.replace(".0",""))
-print("-"*30)
-print("Conversion to Exodus Completed")
-print("-"*30)
+print(csvname+ " is renamed as "+ csvname2)
+print("-"*34)
+print("||Conversion to Exodus Completed||")
+print("-"*34)
