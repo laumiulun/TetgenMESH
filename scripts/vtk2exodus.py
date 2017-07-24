@@ -14,6 +14,17 @@ def find(name,path):
         if name in files:
             return os.path.join(root, name)
 
+# READ FILE FROM INPUT
+def readfile(filenameinput):
+    with open(filenameinput) as f:
+        out=[]
+        for line in f:
+            line = line.split()
+            if line:
+                line=[str(i) for i in line]  # convert to str
+                out.append(line)
+    return out
+###################################################################
 # FIND HOME DIRECTORY
 from os.path import expanduser
 os2=expanduser("~")
@@ -25,14 +36,30 @@ while True:
         f=open(filename)
         break
     except BaseException:
-        print '\n ERROR: INPUT FILE NOT FIND'
-        
+        print '\nERROR: INPUT FILE NOT FIND'
+
 inname=filename
 ename=inname[:-3]+"e"          # exodus name
 csvname=inname[:-3]+".csv"      # CSV name
 csvname2=inname[:-4]+".0.csv"   #CSV2name
-# PARAVIEW PYTHON
+print "\nFile Found "
+
+# Find Attributes Name from VTK file
+data=readfile(filename)
+attLine=[]
+k=0
+for i in range(len(data)):
+    if "SCALARS" in data[i]:
+        attLine.append([])
+        attLine[k]=data[i]
+        k+=1
+attName=[]
+for i in range(len(attLine)):
+    attName.append([])
+    attName[i]=attLine[i][1]
+
 #----------------------------------------------------#
+# ParaView PYTHON
 
 #### import the simple module from the paraview
 from paraview.simple import *
@@ -49,22 +76,28 @@ SaveData(ename, proxy=examplevtk)
 examplee = ExodusIIReader(FileName=[ename])
 examplee.PointVariables = []
 
-# save data
-SaveData(csvname, proxy=examplee)
+examplee.PointVariables = attName
 
+# save data
+SaveData(csvname, proxy=examplee, UseScientificNotation=1)
 #### uncomment the following to render all views
 # RenderAllViews()
 # alternatively, if you want to write images, you can use SaveScreenshot(...)
 
-print("\n Done")
-# MODIFY CSV FILE
+print("PARAVIEW PYTHON COMPLETED")
+
 #----------------------------------------------------#
+# MODIFY CSV FILE
 with open(csvname2) as fin:
     lines = fin.readlines()
-lines[0] = lines[0].replace(',','')
+lines[0] = lines[0].replace('"','')
 
 with open(csvname2, 'w') as fout:
     for line in lines:
         fout.write(line)
-print("\n Commas Removed")
 
+print("\nQuotes Removed")
+
+# Replace Name
+os.rename(csvname2, csvname2.replace(".0",""))
+print("\nConversion to Exodus Completed")
