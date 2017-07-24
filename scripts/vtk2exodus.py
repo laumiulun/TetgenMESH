@@ -107,7 +107,7 @@ print("Quotes in CSV removed")
 
 # Replace Name
 os.rename(csvname2, csvname2.replace(".0",""))
-print(csvname+ " is renamed as "+ csvname2)
+print(csvname2+ " is renamed as "+ csvname2.replace(".0",""))
 print("-"*34)
 print("||Conversion to Exodus Completed||")
 print("-"*34)
