@@ -84,7 +84,7 @@ SaveData(csvname, proxy=examplee, UseScientificNotation=1)
 # RenderAllViews()
 # alternatively, if you want to write images, you can use SaveScreenshot(...)
 
-print("PARAVIEW PYTHON COMPLETED")
+print("ParaView Python Completed")
 
 #----------------------------------------------------#
 # MODIFY CSV FILE
@@ -96,8 +96,10 @@ with open(csvname2, 'w') as fout:
     for line in lines:
         fout.write(line)
 
-print("\nQuotes Removed")
+print("Quotes Removed")
 
 # Replace Name
 os.rename(csvname2, csvname2.replace(".0",""))
-print("\nConversion to Exodus Completed")
+print("-"*30)
+print("Conversion to Exodus Completed")
+print("-"*30)
