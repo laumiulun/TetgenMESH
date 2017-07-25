@@ -118,29 +118,29 @@ To convert a VTK Mesh to Exodous, a script has been prepared to automate the con
 
 * First, open ParaView, and navigate to **Tools** and **Python Shell**,
 
-![Tools](../contents/tools.png)
+![Tools](./contents/tools.png)
 
 * Then open a new window in the python shell. From there choose **Run Scripts**,
 
-![Python_shell](../contents/shell.png)
+![Python_shell](./contents/shell.png)
 
 * The script is located in **falcon/scripts/paraview2exodus.py**. After that, the console will ask for input file as shown below. 
 
-![Console](../contents/paraview_input.png)
+![Console](./contents/paraview_input.png)
 
 * If the script run sucessfully, it should be similar to the figure below.
 
-![Console](../contents/paraview_finish.png)
+![Console](./contents/paraview_finish.png)
 
 * Paste the path to the input window, e.g., **/Users/xiay/gitprojects/falcon/tests/PT\_TH\_injection\_csvreader\_Petrel/example.vtk**, and click OK. An Exodus file will be generated in the same directory, i.e., **/Users/xiay/gitprojects/falcon/tests/PT\_TH\_injection\_csvreader\_Petrel/example.e**.
 
 * Since **example.e** does not contain any Sideset info, we will need to assign Sideset IDs in Cubit. Open Cubit, and select **File** and import **"example.e"**.
 
-![Python_shell](../contents/file.png)
+![Python_shell](./contents/file.png)
 
 * To assign SideSet IDs, click on the Yellow Cube on the command toolbar, and choose **exodus sideset**
 
-![Python_shell](../contents/sideset.png)
+![Python_shell](./contents/sideset.png)
 
 * Follow the table below to set all SideSet IDs
 
@@ -155,11 +155,11 @@ To convert a VTK Mesh to Exodous, a script has been prepared to automate the con
 
 * After that, we need to change the element type from **TETRA** to **TETRA4**. To do that, expand **Blocks** on the powertools on the right, 
 
-![Python_shell](../contents/powertools.png)
+![Python_shell](./contents/powertools.png)
 
 * Choose the Block (Default is Block 10) and change the Element type to **TETRA4** .
 
-![Python_shell](../contents/elementtype.png)
+![Python_shell](./contents/elementtype.png)
 
 * At the end, there should be two files if you follow all the steps above:
 
