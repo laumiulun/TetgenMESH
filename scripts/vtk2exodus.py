@@ -86,13 +86,14 @@ examplee.PointVariables = attName
 
 # save data
 SaveData(csvname, proxy=examplee, UseScientificNotation=1)
-print(csvname+" is saved in working directory")
+print(csvname.replace("..",".0.")+" is saved in working directory")
 #### uncomment the following to render all views
 # RenderAllViews()
 # alternatively, if you want to write images, you can use SaveScreenshot(...)
 
 print("ParaView Python Completed")
 print("-"*75)
+
 #----------------------------------------------------#
 # MODIFY CSV FILE
 with open(csvname2) as fin:

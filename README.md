@@ -114,32 +114,35 @@ Note:
 
 ## Workflow Part 2: VTK Mesh to Exodous Mesh
 
-To convert VTK Mesh into Exodous:
+To convert a VTK Mesh to Exodous, a script has been prepared to automate the conversion from **example.vtk** to **example.e** and **example.csv**. To use the automated script:
 
-A scripts have been prepared to automate the conversion from **example.vtk** to **example.e** and **example.csv**. [1]
+* First, open ParaView, and navigate to **Tools** and **Python Shell**,
 
-To use the automated script:
+![Tools](../contents/tools.png)
 
-First open the paraview, and navigate to **Tools** and **Python Shell**,
-![Tools](https://raw.githubusercontent.com/laumiulun/TetgenMESH/devel/contents/tools.png)
+* Then open a new window in the python shell. From there choose **Run Scripts**,
 
-This is open a new window which is the python shell. From there choose **Run Scripts**,
+![Python_shell](../contents/shell.png)
 
-![Python_shell](https://raw.githubusercontent.com/laumiulun/TetgenMESH/devel/contents/shell.png)
+* The script is located in **falcon/scripts/paraview2exodus.py**. After that, the console will ask for input file as shown below. 
 
-The script is located in **../tetgenmesh/scripts/paraview2exodus.py**. Afterward, the console will ask for input file,
- 
-![Console](https://raw.githubusercontent.com/laumiulun/TetgenMESH/devel/contents/console.png)
+![Console](../contents/paraview_input.png)
 
-**example.e** does not contain any Sideset info. To assign Sideset IDs,  Select **File** and import **"example.e"** in Cubit.
+* If the script run sucessfully, it should be similar to the figure below.
 
-![Python_shell](https://raw.githubusercontent.com/laumiulun/TetgenMESH/devel/contents/file.png)
+![Console](../contents/paraview_finish.png)
 
-To assign SideSet IDs, click on the Yellow Cube on the command toolbar, and choose **exodus sideset**
+* Paste the path to the input window, e.g., **/Users/xiay/gitprojects/falcon/tests/PT\_TH\_injection\_csvreader\_Petrel/example.vtk**, and click OK. An Exodus file will be generated in the same directory, i.e., **/Users/xiay/gitprojects/falcon/tests/PT\_TH\_injection\_csvreader\_Petrel/example.e**.
 
-![Python_shell](https://raw.githubusercontent.com/laumiulun/TetgenMESH/devel/contents/sideset.png)
+* Since **example.e** does not contain any Sideset info, we will need to assign Sideset IDs in Cubit. Open Cubit, and select **File** and import **"example.e"**.
 
-Follow the table below to set all SideSet IDs
+![Python_shell](../contents/file.png)
+
+* To assign SideSet IDs, click on the Yellow Cube on the command toolbar, and choose **exodus sideset**
+
+![Python_shell](../contents/sideset.png)
+
+* Follow the table below to set all SideSet IDs
 
 | SideSet IDs Number|Corrpsonding Facet|
 |:-----------------:|:----------------:| 
@@ -150,23 +153,21 @@ Follow the table below to set all SideSet IDs
 | 5                 | Z-min            |
 | 6                 | Z-max            | 
 
-Afterward, we need to change the element type from **TERA** to **TERA4**. 
+* After that, we need to change the element type from **TETRA** to **TETRA4**. To do that, expand **Blocks** on the powertools on the right, 
 
-To change to **TERA4**, expand **Blocks** on the powertools on the right, 
+![Python_shell](../contents/powertools.png)
 
-![Python_shell](https://raw.githubusercontent.com/laumiulun/TetgenMESH/devel/contents/powertools.png)
+* Choose the Block (Default is Block 10) and change the Element type to **TETRA4** .
 
-Choose the Block(Default is Block 10) and change the Element type to **TERA4** 
+![Python_shell](../contents/elementtype.png)
 
-![Python_shell](https://raw.githubusercontent.com/laumiulun/TetgenMESH/devel/contents/elementtype.png)
+* At the end, there should be two files if you follow all the steps above:
 
-At the end, there should be two files if you follow all the steps above:
-
-* **"example.e"** contains an Exodus mesh file with Subset IDs, but without any nodal material properties. FALCON reads this file in the [mesh] keyword block in the FALCON input script.
-* **"example.csv"** a CSV file containing the nodal material properties. FALCON reads this file in the [VectorPostprocessors] keyword block.
+	* **"example.e"** contains an Exodus mesh file with Subset IDs, but without any nodal material properties. FALCON reads this file in the [mesh] keyword block in the FALCON input script.
+	* **"example.csv"** is a CSV file containing the nodal material properties. FALCON reads this file in the [VectorPostprocessors] keyword block.
 
 
-### Side Note[ ]: 
+### Side Note: 
 
-* [1] Conversion from **example.vtk** to **example.e** and **example.csv** occurs inside the paraview GUI python shell. Fully automated process inside terminal had been explored with errors encountered on different operating system. By using python shell inside paraview GUI client, it can guarantee compatibility across different paraview versions and operating systems.
-* [2] Additional scripting has been developed for **example.csv**, because Falcon CSV reader does not accept commas on the header of file.
+* Conversion from **example.vtk** to **example.e** and **example.csv** occurs inside the ParaView GUI python shell. Fully automated process through command-line terminal had been explored. However errors were encountered on different operating systems. By using python shell inside ParaView GUI client, it can guarantee compatibility across different ParaView versions and operating systems.
+* Additional scripting has been developed for **example.csv**, because the underlying MOOSE's CSV reader does not accept double-quotes on the header of file.
