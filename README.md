@@ -9,8 +9,9 @@
 
 This document describes a workflow of how to generate a tetrahedral mesh with nodal attributes from a point cloud. In reservoir engieering, it is flexible to use a tetrahedral mesh for representing a geological subsurface domain, and  the nodal attributes in a mesh can be used to represent __material properties__ of interest, e.g., permeability, porosity, rock density and thermal conductivity. Usually, those properties can be provided from the output of reservoir modeling software (e.g. [RockWorks](https://www.rockware.com/product/overview.php?id=165) or [Petrel](https://www.software.slb.com/products/petrel)) in the form of (x, y, z) node coordinates with nodal attributes.
 
-Examples of output from this script is shown below
-![Tools](./contents/vtk_density.png)
+__Examples of output from this workflow is shown below:__
+![VTK_density](./contents/vtk_density.png) 
+![VTK_porosity](./contents/vtk_porosity.png)
 The workflow consists of two parts:
 
 * **Part 1. From Point Cloud to VTK Mesh** describes the generation of a VTK mesh from a point cloud.
@@ -104,6 +105,12 @@ ENTER FORMAT:
 
 ```
 Enter Input File Name:
+```
+
+* Enter __1__ or __2__ depend on unit of input file
+
+```
+Standard Unit[1] or Geophysics Unit[2]: 
 ```
 
 * A tetrahedral mesh file named __example.vtk__ is generated at the end.
