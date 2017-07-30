@@ -1,4 +1,5 @@
 # A Workflow of Tetrahedral Mesh Generation with Nodal Attributes from a Point Cloud
+![VTK_MESH](./contents/vtk_mesh.png)
 
 ## Developers ##
 
